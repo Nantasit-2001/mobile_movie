@@ -6,7 +6,7 @@ import SearchBar from "@/components/SearchBar";
 import { useExpoRouter } from "expo-router/build/global-state/router-store";
 import useFetch from "@/services/useFetch";
 import { fetchMovies } from "@/services/api";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import MovieCard from "@/components/MovieCard";
 
 export default function Index() {
   const router = useExpoRouter()
@@ -45,9 +45,7 @@ export default function Index() {
                     <FlatList 
                       data={movives}
                       renderItem={({item})=>(
-                        <Text className="text-white text-xs">
-                            {item.title.length > 20 ? item.title.substring(0, 17) + '...' : item.title}
-                        </Text>
+                        <MovieCard {...item} />
                       )}
                         keyExtractor={(item)=>item.id.toString()}
                         numColumns={3}

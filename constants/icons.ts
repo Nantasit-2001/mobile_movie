@@ -13,7 +13,7 @@ export const icons = {
   person,
   logo,
   save,
-  star,
+  star, 
   play,
   arrow,
 };
