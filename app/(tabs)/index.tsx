@@ -10,12 +10,11 @@ import MovieCard from "@/components/MovieCard";
 
 export default function Index() {
   const router = useExpoRouter()
-  
   const{
       data:movives, 
       loading:moviesLoading,
       error:moviesError
-    } = useFetch(()=>fetchMovies({query:''  }))
+    } = useFetch(()=>fetchMovies({query:''}))
 
   return (
     <View className="flex-1 bg-primary">
@@ -36,7 +35,7 @@ export default function Index() {
               ):moviesError?(
                 <Text className="text-white">Error: {moviesError?.message}</Text>
               ):(
-                <View className="flex-1 mt-5">
+                <View className="flex-1 ">
                 <SearchBar 
                     onPress={()=>router.push("/search")}
                     placeholder="Search for a movie"/>
