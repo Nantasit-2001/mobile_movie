@@ -1,12 +1,22 @@
-import { StatusBar } from "react-native";
+import { ActivityIndicator, FlatList, StatusBar } from "react-native";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import { View, Image, ScrollView } from "react-native";
+import { View, Image, ScrollView, Text } from "react-native";
 import SearchBar from "@/components/SearchBar";
 import { useExpoRouter } from "expo-router/build/global-state/router-store";
+import useFetch from "@/services/useFetch";
+import { fetchMovies } from "@/services/api";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export default function Index() {
-  const router = useExpoRouter();
+  const router = useExpoRouter()
+  
+  const{
+      data:movives, 
+      loading:moviesLoading,
+      error:moviesError
+    } = useFetch(()=>fetchMovies({query:''  }))
+
   return (
     <View className="flex-1 bg-primary">
        <StatusBar barStyle="light-content" translucent={true} backgroundColor="transparent" />
@@ -15,12 +25,44 @@ export default function Index() {
           className="flex-1 px-5" 
           showsVerticalScrollIndicator={false} 
           contentContainerStyle={{minHeight:"100%",paddingBottom:10}}>
-              <Image source={icons.logo} className="w-12 g-10 mt-20 mb-5 mx-auto "></Image> 
-              <View className="flex-1 mt-5">
+              <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto "></Image> 
+              
+              {moviesLoading?(
+                <ActivityIndicator
+                    size="large"
+                    color="#0000FF"
+                    className ="mt-10 self-center"
+                />
+              ):moviesError?(
+                <Text className="text-white">Error: {moviesError?.message}</Text>
+              ):(
+                <View className="flex-1 mt-5">
                 <SearchBar 
                     onPress={()=>router.push("/search")}
                     placeholder="Search for a movie"/>
+                <>
+                  <Text className="text-lg text-white font-bold mt-5 mb-3">Latest Movies</Text>
+                    <FlatList 
+                      data={movives}
+                      renderItem={({item})=>(
+                        <Text className="text-white text-xs">
+                            {item.title.length > 20 ? item.title.substring(0, 17) + '...' : item.title}
+                        </Text>
+                      )}
+                        keyExtractor={(item)=>item.id.toString()}
+                        numColumns={3}
+                        columnWrapperStyle={{
+                            justifyContent:'flex-start',
+                            gap:20,
+                            paddingRight:5,
+                            marginBottom:10,
+                        }}
+                        className="mt-2 pb-32 "
+                        scrollEnabled={false}
+                    />
+                </>
               </View>
+              )}       
       </ScrollView>
     </View>
   );
