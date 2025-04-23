@@ -9,7 +9,6 @@ const useFetch = <T>(fetchFunction:()=>Promise<T>,autoFetch= true)=>{
             setLoading(true);
             sestError(null)
             const results = await fetchFunction();
-            console.log(results)
             setData(results)
         }catch(e)
             //@ts-ignor
