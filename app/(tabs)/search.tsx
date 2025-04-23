@@ -25,7 +25,7 @@ const[searchQuery,setSearchQuery] = useState('')
                     if(searchQuery.trim()){
                         await loadMovies();
                     }else{reset()}
-                },500)
+                },1000)
                 return () =>clearTimeout(timeoutId)
         },[searchQuery])
     
