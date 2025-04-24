@@ -47,7 +47,6 @@ const MovieCard = ({id, poster_path, title, vote_average, release_date}:Movie)=>
                 </View>
                 
                 <Text className="text-xs text-light-300">{release_date?.split('-')[0]}</Text>
-                {/* <View className="flex-row items-center"> */}
                 
             </TouchableOpacity>
         </Link>
