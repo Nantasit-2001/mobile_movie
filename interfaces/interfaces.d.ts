@@ -23,6 +23,15 @@ interface TrendingMovie {
   poster_url: string;
 }
 
+interface SavedMovie{
+  user:string;
+  user_id:number;
+  title:string
+  poster_url:string;
+  movie_id:number;
+  save_date:Datetime;
+}
+
 interface MovieDetails {
   adult: boolean;
   backdrop_path: string | null;

@@ -1,9 +1,10 @@
 import { ScrollView, Text,View,Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import useFetch from "@/services/useFetch";
 import { fetchMoviesDetails } from "@/services/api";
 import { icons } from "@/constants/icons";
+import { addSavedMovie, deleteSavedMovie, getSavedMovies } from "@/services/appwrite";
 
 interface MovieInfoProps {
     label:string,
@@ -19,8 +20,48 @@ const MovieInfo =({label,value}:MovieInfoProps)=>{
 }
 
 const MoviesDetails =()=>{
+    const [save,setSave] = useState(false)
     const {id} = useLocalSearchParams();
-    const {data:movie,loading} = useFetch(()=>fetchMoviesDetails(id as string))
+
+    const { data: movie, loading } = useFetch<MovieDetails | null>(() => fetchMoviesDetails(id as string));
+
+    const{
+        data:savedmovies, 
+        loading:moviesLoading,
+        error:savedMoviesError
+        } = useFetch(getSavedMovies)  
+
+        useEffect(() => {
+            if (savedmovies) {
+                setSave(savedmovies.some((savedMovie) => savedMovie.movie_id === movie?.id));
+            }
+        }, [savedmovies, movie?.id]); 
+
+        const pressAddSaveMovie = () => {
+
+            if (movie) { 
+                if (savedmovies && savedmovies.some((savedMovie) => savedMovie.movie_id === movie.id)) {
+                    deleteSavedMovie(movie.id);
+                } else {
+                    if (!movie.id || !movie.title || !movie.poster_path) {
+                        console.warn("Cannot save movie: missing data", movie);
+                        return;}
+                    addSavedMovie({
+                        id: movie.id,
+                        title: movie.title,
+                        poster_path: movie.poster_path,
+                      });
+                }
+              setSave(!save);
+            } else {
+              console.log("Movie is not available.");
+            }
+          };
+        
+          if (loading || moviesLoading) {
+            return <Text>Loading...</Text>;
+          }
+          
     return(
         <View className="bg-primary flex-1">
            <ScrollView 
@@ -32,8 +73,8 @@ const MoviesDetails =()=>{
                 </View>
                 <View className="flex-col items-start justify-center mt-5 px-5 relative">
                     <TouchableOpacity className="absolute top-2 right-0 mx-5 bg-dark-100 rounded-lg py-2 px-3 flex flex-row items-center justify-center z-10"
-                              onPress={router.back}>
-                        <Image source={icons.save} className="size-5 mr-1 mt-0.5" tintColor="#e9e030"/>
+                            onPress={() =>pressAddSaveMovie()}>
+                        <Image source={icons.save} className="size-6 mr-1 mt-0.5" tintColor={save?"#e9e030":"#ffffff"}/>
                         <Text className="text-white font-semibold text-xs">Save</Text>
                     </TouchableOpacity>
                     <Text className="text-white font-bold text-xl">{movie?.title}</Text>
