@@ -68,7 +68,7 @@ export default function Index() {
                                     movie={item} 
                                     index={index}/>
                           )}  
-                          keyExtractor={(item)=>item.movie_id.toString()}
+                          keyExtractor={(item)=>item.searchTerm.toString()}
                           ListEmptyComponent={<Text className="text-white text-sm">No trending movies found</Text>}
                       />
                     </View>
