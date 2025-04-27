@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import React from "react";
 import { ImageBackground, Image, Text, View  } from "react-native";
 import {images} from '../../constants/images'
@@ -25,7 +25,11 @@ const TabIcon = ({focused=false, icon={}, title=''}) =>{
 }
 
 const _Layout =()=>{
-    return (
+  const section = false;  
+  return (
+    !section? 
+      ( <Redirect href="/(auth)/login"/> )
+      :(
         <Tabs
             screenOptions={{tabBarShowLabel:false,
             tabBarItemStyle:{
@@ -104,6 +108,7 @@ const _Layout =()=>{
             }}
           />
         </Tabs>
-      );      
+      )
+    );      
 }
 export default _Layout
