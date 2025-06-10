@@ -1,4 +1,4 @@
-import { Text,View,Image, StatusBar, ScrollView, FlatList, ActivityIndicator } from "react-native";
+import { Text,View,Image, StatusBar, ScrollView, FlatList, ActivityIndicator,Dimensions } from "react-native";
 import React, { useEffect } from "react";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
@@ -8,6 +8,7 @@ import SavedMovieCard from "@/components/SavedMovieCcard";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 const saved =()=>{
+    const { width } = Dimensions.get("window");
     const{
         data:savedmovies, 
         loading:moviesLoading,
@@ -46,7 +47,7 @@ const saved =()=>{
                         <SavedMovieCard {...item}/>
                       )}
                         keyExtractor={(item)=>item.movie_id.toString()}
-                        numColumns={3}
+                        numColumns={(() => { return width > 640 ? 4 : 3;})()}
                         columnWrapperStyle={{
                             justifyContent:'flex-start',
                             gap:20,

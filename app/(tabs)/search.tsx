@@ -1,6 +1,6 @@
 import MovieCard from "@/components/MovieCard";
 import { images } from "@/constants/images";
-import {ActivityIndicator, FlatList, Text,View } from "react-native";
+import {ActivityIndicator, FlatList, Text,View,Dimensions } from "react-native";
 import { Image } from "react-native";
 import useFetch from "@/services/useFetch";
 import { fetchMovies } from "@/services/api";
@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 
 const Search =()=>{
 const[searchQuery,setSearchQuery] = useState('')
-
+const { width } = Dimensions.get("window");
     const{
         data:movies, 
         loading:moviesLoading,
@@ -43,7 +43,8 @@ const[searchQuery,setSearchQuery] = useState('')
                     <MovieCard {...item}/>}
                     keyExtractor={(item)=>item.id.toString()}
                     className="px-5"
-                    numColumns={3}        
+                         numColumns={
+                        (() => { return width > 640 ? 4 : 3;})()}        
                         columnWrapperStyle={{
                                 justifyContent:'center',
                                 gap:16,

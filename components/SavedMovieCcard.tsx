@@ -1,4 +1,4 @@
-import { Text,TouchableOpacity,View } from "react-native";
+import { Text,TouchableOpacity,View,Dimensions } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
 import { Image } from "react-native";
@@ -13,9 +13,10 @@ interface Props {
 }
 
 const SavedMovieCard = ({user,user_id, poster_url, title,movie_id ,save_date}:Props)=>{
+    const { width } = Dimensions.get("window");
     return(
         <Link href={`/movies/${movie_id.toString()}`} asChild>
-            <TouchableOpacity className="w-[30%]">
+            <TouchableOpacity className={`${width>640?"sm:w-[22.7%]":"w-[30%]"}`}>
                 <Image source={{
                             uri: poster_url
                                     ?`${poster_url}`

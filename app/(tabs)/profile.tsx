@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert,StatusBar,Image } from "react-native";
+import { View, Text, TouchableOpacity, Alert,StatusBar,Image,ScrollView } from "react-native";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 import React, { useEffect, useState } from "react";
@@ -38,35 +38,35 @@ const profile =()=>{
   };
     return(
         
-        <View className="flex-1 bg-primary">
-            <StatusBar barStyle="light-content" translucent={true} backgroundColor="transparent" />
-            <Image source={images.bg} className="absolute w-full z-0"/>
-            <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto "></Image> 
-            <Text className="text-white text-4xl font-bold mb-10 text-center mt-6">Profile</Text>
-            <Text className="text-white text-3xl py-5 text-center px-2">👤 {capitalize(name)} </Text>
-            <Text className="text-white text-xl text-center mb-10 my-6 px-2">
-                Email: <Text className="text-white text-xl font-medium">{email}</Text>
-            </Text>
+        <ScrollView className="flex-1 bg-primary" contentContainerStyle={{ flexGrow: 1 }}>
+          <StatusBar barStyle="light-content" translucent={true} backgroundColor="transparent" />
+          <Image source={images.bg} className="absolute w-full z-0"/>
+          <Image source={icons.logo} className="w-12 h-10 mt-20 mb-5 mx-auto " />
+          <Text className="text-white text-4xl font-bold mb-10 text-center mt-6">Profile</Text>
+          <Text className="text-white text-3xl py-5 text-center px-2">👤 {capitalize(name)} </Text>
+          <Text className="text-white text-xl text-center mb-10 my-6 px-2">
+            Email: <Text className="text-white text-xl font-medium">{email}</Text>
+          </Text>
 
-      <TouchableOpacity
-        onPress={()=>router.replace("/saved")}
-        className="bg-gray-700 px-8 mt-6 py-6 rounded-2xl mx-10 shadow-md shadow-gray-300 active:opacity-80 flex flex-row justify-center items-center gap-2">
-        <Image source={icons.save} tintColor="#e9e030"/>
-        <Text className="text-white text-xl font-semibold text-center"> Go to my saved</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={()=>router.replace("/search")}
-        className="bg-gray-700 px-8 mt-6 py-6 rounded-2xl mx-10 shadow-md shadow-gray-300 active:opacity-80 flex flex-row justify-center items-center gap-2">
-        <Image source={icons.search} tintColor="#ffffff"/>
-        <Text className="text-white text-xl font-semibold text-center"> Go to Search</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={handleLogout}
-        className="bg-gray-700 px-8 mt-6 py-6 rounded-2xl mx-10 shadow-md shadow-gray-300 active:opacity-80 flex flex-row justify-center items-center gap-3">
-        <Text>🔌 </Text>
-        <Text className="text-white text-xl font-semibold text-center">Logout</Text>
-      </TouchableOpacity>
-        </View>
+          <TouchableOpacity
+            onPress={()=>router.replace("/saved")}
+            className="bg-gray-700 px-8 mt-6 py-6 rounded-2xl mx-10 shadow-md shadow-gray-300 active:opacity-80 flex flex-row justify-center items-center gap-2">
+            <Image source={icons.save} tintColor="#e9e030"/>
+            <Text className="text-white text-xl font-semibold text-center"> Go to my saved</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={()=>router.replace("/search")}
+            className="bg-gray-700 px-8 mt-6 py-6 rounded-2xl mx-10 shadow-md shadow-gray-300 active:opacity-80 flex flex-row justify-center items-center gap-2">
+            <Image source={icons.search} tintColor="#ffffff"/>
+            <Text className="text-white text-xl font-semibold text-center"> Go to Search</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleLogout}
+            className="bg-gray-700 px-8 mt-6 py-6 mb-32 rounded-2xl mx-10 shadow-md shadow-gray-300 active:opacity-80 flex flex-row justify-center items-center gap-3">
+            <Text>🔌 </Text>
+            <Text className="text-white text-xl font-semibold text-center">Logout</Text>
+          </TouchableOpacity>
+        </ScrollView>
     )
 }
 export default profile

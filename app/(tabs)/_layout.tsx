@@ -16,15 +16,15 @@ const TabIcon = ({focused=false, icon={}, title=''}) =>{
     return(
         <>
             <ImageBackground source={images.highlight} 
-                className="flex flex-row w-full min-w-[112px] min-h-16 mt-4 justify-center items-center rounded-full overflow-hidden ">
-                    <Image source={icon} tintColor="#151312" className="sise-5"/>
+                className="flex flex-row min-w-[112px] min-h-14 mt-4 sm:mt-[1px] sm:min-w-[210px] justify-center bg-purple-300 items-center rounded-full overflow-hidden ">
+                    <Image source={icon} tintColor="#151312" className="size-5"/>
                     <Text className=" text-secondary text-base font-semibold ml-2">{title}</Text>
             </ImageBackground>
         </>
         )}
         else{
             return(
-                <View className="size-full justify-center items-center mt-4 rounded-full ">
+                <View className="size-full justify-center items-center mt-4 sm:mt-[1px] rounded-full">
                     <Image source={icon} tintColor="#A8B5DB" className="size-5"/>    
                 </View>
                 )
@@ -63,7 +63,6 @@ const _Layout =()=>{
                 marginBottom:36,
                 height:52,
                 position:'absolute',
-                overflow:'hidden',
                 }  
             }}
         >

@@ -79,7 +79,7 @@ const MoviesDetails =()=>{
                             {movie?.title}
                         </Text>
                         <TouchableOpacity
-                            className="w-[20%] mr-4 bg-dark-100 rounded-lg h-11 px-3 flex flex-row items-center justify-center z-10"
+                            className="w-[20%] sm:w-[16%] mr-4 bg-dark-100 rounded-lg h-11 px-3 flex flex-row items-center justify-center z-10"
                             onPress={() => pressAddSaveMovie()}
                         >
                             <Image

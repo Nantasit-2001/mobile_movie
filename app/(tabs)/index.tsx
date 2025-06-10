@@ -1,7 +1,7 @@
 import { ActivityIndicator, FlatList, StatusBar } from "react-native";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
-import { View, Image, ScrollView, Text } from "react-native";
+import { View, Image, ScrollView, Text, Dimensions } from "react-native";
 import SearchBar from "@/components/SearchBar";
 import { useRouter } from "expo-router";
 import useFetch from "@/services/useFetch";
@@ -11,6 +11,7 @@ import { getTrendingMovies } from "@/services/appwrite";
 import TrendingCard from "@/components/TrendingCard";
 import { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
+
 
 export default function Index() {
   const [page, setPage] = useState(1);
@@ -24,6 +25,8 @@ export default function Index() {
     loading: trendingMoviesLoading,
     error: trendingMoviesError
   } = useFetch(getTrendingMovies);
+
+const { width } = Dimensions.get("window");
 
   useEffect(() => {
     const fetchMoviespage = async () => {
@@ -100,12 +103,12 @@ export default function Index() {
               data={movies}
               renderItem={({ item }) => <MovieCard {...item} />}
               keyExtractor={(item, index) => `${item.id}-${index}`}
-              numColumns={3}
+              numColumns={(() => { return width > 640 ? 4:3})()}
               columnWrapperStyle={{
-                justifyContent: 'flex-start',
-                gap: 20,
-                paddingRight: 5,
-                marginBottom: 10
+              justifyContent: 'flex-start',
+              gap: 20,
+              paddingRight: 5,
+              marginBottom: 10
               }}
               className="mt-2"
               scrollEnabled={false}
@@ -113,9 +116,9 @@ export default function Index() {
 
             {moviesLoading ? (
               <ActivityIndicator
-                size="large"
-                color="#0000FF"
-                className="self-center pb-32 mt-7"
+              size="large"
+              color="#0000FF"
+              className="self-center pb-32 mt-7"
               />
             ) : maxPage > page && (
               <TouchableOpacity onPress={() => setPage(page + 1)}>
