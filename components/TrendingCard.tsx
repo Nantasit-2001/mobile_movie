@@ -12,15 +12,15 @@ const TrendingCard =({movie:{movie_id,title,poster_url},index}:TrendingCardProps
                     className="w-32 h-48 rounded-lg"
                     resizeMode = "cover"
                 />
-                <View className="absolute bottom-6 left-[-24px] px-2 py-1 w-full">
+                <View className="absolute bottom-4 left-[-24px] px-2 py-1 w-full z-100 ">
                     <MaskedView maskElement={ 
                         <View>
-                            <Text className="font-bold text-white text-6xl">{index + 1}</Text>
+                            <Text className="font-bold text-white text-6xl h-100">{index + 1}</Text>
                         </View>
                         }>
                         <Image 
                             source={images.rankingGradient}
-                            className="size-14 w-full"
+                            className="size-14 w-full h-16"
                             resizeMode="cover"
                         />
                     </MaskedView>

@@ -1,8 +1,15 @@
-import { Redirect, Tabs } from "expo-router";
+import { Tabs,useRouter } from "expo-router";
 import React from "react";
 import { ImageBackground, Image, Text, View  } from "react-native";
 import {images} from '../../constants/images'
 import { icons } from "@/constants/icons";
+import { useState, useEffect } from "react";
+import { Client, Account } from 'appwrite';
+
+    const client = new Client()
+    .setEndpoint('https://cloud.appwrite.io/v1')
+    .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!)
+    const account = new Account(client);
 
 const TabIcon = ({focused=false, icon={}, title=''}) =>{
     if(focused){
@@ -25,11 +32,20 @@ const TabIcon = ({focused=false, icon={}, title=''}) =>{
 }
 
 const _Layout =()=>{
-  const section = false;  
+    const router = useRouter()
+    useEffect(() => {
+      async function checkSession() {
+        try {
+          await account.get();
+        } catch (error) {
+          router.replace('/login');
+        }
+      }
+      checkSession();
+    }, []);
+
   return (
-    !section? 
-      ( <Redirect href="/(auth)/login"/> )
-      :(
+
         <Tabs
             screenOptions={{tabBarShowLabel:false,
             tabBarItemStyle:{
@@ -108,7 +124,6 @@ const _Layout =()=>{
             }}
           />
         </Tabs>
-      )
-    );      
+      )    
 }
 export default _Layout

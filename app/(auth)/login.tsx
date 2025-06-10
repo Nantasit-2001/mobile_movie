@@ -3,6 +3,7 @@ import { View, StatusBar, Image, Text, TextInput, TouchableOpacity, ActivityIndi
 import { useRouter } from 'expo-router';
 import { images } from '@/constants/images';
 import { icons } from '@/constants/icons';
+import { login } from '@/services/authen';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -13,10 +14,41 @@ export default function RegisterScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const validateForm = () => {
+    let valid = true;
+    let errors = { email: '', password: ''};
+
+    if (!email.includes('@') && !email.includes('mail')) {
+      errors.email = 'รูปแบบอีเมลไม่ถูกต้อง';
+      valid = false;
+    }
+
+    if (password.length < 6) {
+      errors.password = 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร';
+      valid = false;
+    }
+
+    setIncorrect(errors);
+    return valid;
+  };
+
   const handleLogin = async () => {
-    setLoading(true);
-    setError('');
-};
+      if (!validateForm()) return;
+  
+      setLoading(true);
+      setError('');
+      try {
+          const { success, error } = await login(email, password);
+          if (!success) throw new Error(error);
+          router.replace('/(tabs)');
+      } catch (e: any) {
+          console.log(e.message);
+          setError(e.message || 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ');
+      } finally {
+          setLoading(false);
+      }
+  };
+  
   return (
     <View className="flex-1 bg-primary">
       <StatusBar barStyle="light-content" translucent={true} backgroundColor="transparent" />
@@ -38,18 +70,19 @@ export default function RegisterScreen() {
               setEmail(text);
               setIncorrect(prev => ({ ...prev, email: '' }));
             }}
-            className="text-white bg-dark-100 rounded-lg py-3"
+            className="text-white bg-dark-100 rounded-lg py-3 pl-4"
           />
           {incorrect.email !== '' && <Text className="text-red-500 text-xs pt-1">{incorrect.email}</Text>}
 
           <Text className="text-white mt-4">Password</Text>
           <TextInput
+            secureTextEntry
             value={password}
             onChangeText={(text) => {
               setPassword(text);
               setIncorrect(prev => ({ ...prev, password: '' }));
             }}
-            className="text-white bg-dark-100 rounded-lg py-3"
+            className="text-white bg-dark-100 rounded-lg py-3 pl-4"
           />
           {incorrect.password !== '' && <Text className="text-red-500 text-xs pt-1">{incorrect.password}</Text>}
         </View>
