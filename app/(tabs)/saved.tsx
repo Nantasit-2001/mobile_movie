@@ -14,7 +14,6 @@ const saved =()=>{
         error:savedMoviesError,
         refetch
         } = useFetch(getSavedMovies)    
-
         useFocusEffect(
             useCallback(() => {
               refetch();
@@ -40,6 +39,7 @@ const saved =()=>{
                             </Text>)
             :(<View>
                 <Text className="text-lg text-white font-bold mb-5 mt-8">Saved movies</Text>
+                {savedmovies?.length===0  && <Text className="text-gray-400 text-center mt-10">No movies has been saved yet.</Text>}
                 <FlatList 
                       data={savedmovies}
                       renderItem={({item})=>(

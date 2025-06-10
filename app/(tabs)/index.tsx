@@ -3,7 +3,7 @@ import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { View, Image, ScrollView, Text } from "react-native";
 import SearchBar from "@/components/SearchBar";
-import { useExpoRouter } from "expo-router/build/global-state/router-store";
+import { useRouter } from "expo-router";
 import useFetch from "@/services/useFetch";
 import { fetchMovies } from "@/services/api";
 import MovieCard from "@/components/MovieCard";
@@ -11,7 +11,7 @@ import { getTrendingMovies } from "@/services/appwrite";
 import TrendingCard from "@/components/TrendingCard";
 
 export default function Index() {
-  const router = useExpoRouter()
+  const router = useRouter();
   const{
     data:trendingMovies, 
     loading:trendingMoviesLoading,
@@ -23,6 +23,8 @@ export default function Index() {
       error:moviesError
     } = useFetch(()=>fetchMovies({query:''}))
 
+
+    
   return (
     <View className="flex-1 bg-primary">
        <StatusBar barStyle="light-content" translucent={true} backgroundColor="transparent" />
