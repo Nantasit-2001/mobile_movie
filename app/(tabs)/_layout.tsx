@@ -68,7 +68,7 @@ const _Layout =()=>{
             }}
         >
           <Tabs.Screen
-            name="index"  // home
+            name="index"
             options={{
               title: 'Home',
               headerShown: false,
