@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
+import { Platform } from "react-native";
 import './globals.css';
-// import { UserProvider } from "@/context/auth";
 export default function RootLayout() {
   return ( 
     <Stack
@@ -9,14 +9,19 @@ export default function RootLayout() {
   }}>
       <Stack.Screen 
               name="(tabs)"
-              options={{headerShown:false}}
+              options={{
+                headerShown:false}}
               />
       <Stack.Screen
               name="movies/[id]"
-              options={{headerShown:false}}/>
-      <Stack.Screen 
+              options={{
+                headerShown:false}}/>
+      <Stack.Screen
+       
               name="(auth)"
-              options={{headerShown:false}}
+              options={{
+                // animation: Platform.OS === 'android' ? 'none' : 'default',
+                headerShown:false}}
               />
     </Stack>)
 }

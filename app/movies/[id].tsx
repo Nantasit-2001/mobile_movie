@@ -1,4 +1,4 @@
-import { ScrollView, Text,View,Image, TouchableOpacity,ActivityIndicator } from "react-native";
+import { ScrollView, Text,View,Image, TouchableOpacity,ActivityIndicator,Platform } from "react-native";
 import React, { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import useFetch from "@/services/useFetch";
@@ -21,7 +21,6 @@ const MovieInfo =({label,value}:MovieInfoProps)=>{
 const MoviesDetails =()=>{
     const [save,setSave] = useState(false)
     const {id} = useLocalSearchParams();
-
     const { data: movie, loading } = useFetch<MovieDetails | null>(() => fetchMoviesDetails(id as string));
 
     const{
@@ -68,6 +67,7 @@ const MoviesDetails =()=>{
             :<ScrollView 
             style={{ backgroundColor: '#030014' }}
                 contentContainerStyle={{
+                    backgroundColor: '#030014',
                     paddingBottom:80
                 }}>
                 <View>
@@ -110,7 +110,7 @@ const MoviesDetails =()=>{
             </ScrollView>
             }
             <TouchableOpacity className="absolute bottom-5 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50"
-                              onPress={router.back}>
+                              onPress={() => {Platform.OS === 'android' ? router.push('/(tabs)'):router.back()}}>
                 <Image source={icons.arrow} className="size-5 mr-1 mt-0.5 rotate-180" tintColor="#ffffff"/>
                 <Text className="text-white font-semibold text-base">Go back</Text>
             </TouchableOpacity>
