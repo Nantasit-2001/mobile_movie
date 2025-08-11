@@ -20,6 +20,7 @@ const MovieInfo =({label,value}:MovieInfoProps)=>{
 
 const MoviesDetails =()=>{
     const [save,setSave] = useState(false)
+    const [isloading,setIsloading] = useState(false);
     const {id} = useLocalSearchParams();
     const { data: movie, loading } = useFetch<MovieDetails | null>(() => fetchMoviesDetails(id as string));
 
@@ -35,26 +36,32 @@ const MoviesDetails =()=>{
             }
         }, [savedmovies, movie?.id]); 
 
-        const pressAddSaveMovie = () => {
-
+        const pressAddSaveMovie = async() => {
+          try{setIsloading(true);
             if (movie) { 
-                if (savedmovies && savedmovies.some((savedMovie) => savedMovie.movie_id === movie.id)) {
-                    deleteSavedMovie(movie.id);
+                if (savedmovies && save) {
+                    await deleteSavedMovie(movie.id);
+                    setSave(!save);
                 } else {
                     if (!movie.id || !movie.title || !movie.poster_path) {
+                        console.log("------------------------------------------------------------")
                         console.warn("Cannot save movie: missing data", movie);
                         return;}
-                    addSavedMovie({
+                    await addSavedMovie({
                         id: movie.id,
                         title: movie.title,
                         poster_path: movie.poster_path,
                       });
+                      setSave(!save);
                 }
-              setSave(!save);
-            } else {
+            }else {
               console.log("Movie is not available.");
             }
-          };
+          }catch(error) {
+            console.log("Error saving movie:", error);
+          }
+          finally{setIsloading(false);}
+        };
           
     return(
         <View className="bg-primary flex-1">
@@ -80,13 +87,18 @@ const MoviesDetails =()=>{
                         </Text>
                         <TouchableOpacity
                             className="w-[20%] sm:w-[16%] mr-4 bg-dark-100 rounded-lg h-11 px-3 flex flex-row items-center justify-center z-10"
+                            disabled={isloading}
                             onPress={() => pressAddSaveMovie()}
                         >
-                            <Image
+                            {isloading ? 
+                              <ActivityIndicator size="small" color="#ffffff"  className="size-6 mr-1 mt-0.5" />
+                                :
+                              <Image
                                 source={icons.save}
                                 className="size-6 mr-1 mt-0.5"
                                 tintColor={save ? "#e9e030" : "#ffffff"}
-                            />
+                              />
+                            }
                             <Text className="text-white font-semibold text-xs">Save</Text>
                         </TouchableOpacity>
                 </View>
@@ -110,7 +122,7 @@ const MoviesDetails =()=>{
             </ScrollView>
             }
             <TouchableOpacity className="absolute bottom-5 left-0 right-0 mx-5 bg-accent rounded-lg py-3.5 flex flex-row items-center justify-center z-50"
-                              onPress={() => {Platform.OS === 'android' ? router.push('/(tabs)'):router.back()}}>
+                              onPress={router.back}>
                 <Image source={icons.arrow} className="size-5 mr-1 mt-0.5 rotate-180" tintColor="#ffffff"/>
                 <Text className="text-white font-semibold text-base">Go back</Text>
             </TouchableOpacity>
